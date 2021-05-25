@@ -194,7 +194,7 @@ $\mu$ is the mean of the reference group.
 
 $\sigma$ is the standard deviation of the reference group.
 
-Calculates z-scores of all regions. Inputs one or more NIfTI-files from one or more individuals, for which Z-scores are to be calculated, a label name tibble and a tibble including mean values and standard deviations from the reference group for one or more individuals. Returns Z-scores with label names for regions which are in the label name tibble. 
+Calculates Z-scores of all regions. Inputs one or more NIfTI-files from one or more individuals, for which Z-scores are to be calculated, a label name tibble and a tibble including mean values and standard deviations from the reference group for one or more individuals. Returns Z-scores with label names for regions which are in the label name tibble. 
 
 <b>Usage:</b>
 ```
@@ -202,7 +202,7 @@ bzscore(filename, labelnametibble, refstats)
 ````
 <b>Arguments:</b>
 
-- filename: One or more NIfTI-files for individuals from which z-scores are to be calculated.
+- filename: One or more NIfTI-files for individuals from which Z-scores are to be calculated.
 
 - labelnametibble: A label name tibble.
 
@@ -222,7 +222,7 @@ bzscore2(filename, labelnametibble, refstats)
 ````
 <b>Arguments:</b>
 
-- filename: One or more NIfTI-files for individuals from which z-scores are to be calculated
+- filename: One or more NIfTI-files for individuals from which Z-scores are to be calculated
 
 - labelnametibble: A label name tibble.
 
