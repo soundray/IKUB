@@ -17,11 +17,11 @@ basymmetry2 <- function(filename, labelnametibble) {
   labelnametibble <- check_label(labelnametibble)
   output <- filename %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::left_join(labelnametibble, by = "Label_No") %>%
+    dplyr::left_join(labelnametibble, by = "label_id") %>%
     dplyr::mutate(side = substring(
-      trimws(Label_name), nchar(Label_name),nchar(Label_name))) %>%
+      trimws(label_name), nchar(label_name),nchar(label_name))) %>%
     dplyr::filter(side == "R" | side == "L") %>%
-    dplyr::mutate(item = substring(trimws(Label_name), 1, nchar(Label_name) - 2)) %>%
+    dplyr::mutate(item = substring(trimws(label_name), 1, nchar(label_name) - 2)) %>%
     dplyr::group_by(filename, item, side) %>%
     dplyr::summarise(tot_vol_mm3 = sum(vol_mm3), .groups = "drop") %>%
     tidyr::pivot_wider(names_from = "side", values_from = "tot_vol_mm3") %>%

@@ -16,11 +16,11 @@
 bsimilarity2 <- function(filename1, filename2, labelnametibble) {
   labelnametibble <- check_label(labelnametibble)
   counts_output <- purrr::map2_dfr(filename1, filename2, files_element)
-  jaccarddf <- counts_output %>% dplyr::group_by(Label_No, datalabel) %>%
+  jaccarddf <- counts_output %>% dplyr::group_by(label_id, datalabel) %>%
     dplyr::summarise(tot_overlap=sum(overlap_counts), tot_file1=sum(file1_counts),tot_file2=sum(file2_counts), .groups = 'drop') %>%
     dplyr::mutate(jaccard.index=round(tot_overlap/(tot_file1+tot_file2-tot_overlap),3))%>%
-    dplyr::left_join(labelnametibble, by='Label_No') %>%
-    dplyr::select(datalabel, Label_No, Label_name, jaccard.index) %>%
-    dplyr::mutate(variable_x=paste(Label_No, Label_name)) %>%
+    dplyr::left_join(labelnametibble, by='label_id') %>%
+    dplyr::select(datalabel, label_id, label_name, jaccard.index) %>%
+    dplyr::mutate(variable_x=paste(label_id, label_name)) %>%
     dplyr::select(data.annotation=datalabel, variable_x, variable_y=jaccard.index)
 }

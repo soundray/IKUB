@@ -23,8 +23,8 @@ segsurface3D <- function(filename_MR, filename_seg, labelnametibble, targetlabel
   img_seg <- neurobase::readnii(filename_seg)
   # Create labeldf for targetlabel
   rgb2hex <- function(r, g, b) grDevices::rgb(r, g, b, maxColorValue = 255)
-  labeldf <- tibble::tibble(Label_No = as.integer(targetlabel)) %>%
-    dplyr::left_join(labelnametibble, by = "Label_No")
+  labeldf <- tibble::tibble(label_id = as.integer(targetlabel)) %>%
+    dplyr::left_join(labelnametibble, by = "label_id")
   labeldf <- labeldf %>% dplyr::mutate(color = rgb2hex(labeldf$R, labeldf$G, labeldf$B))
 
   # Create and display contour for skull
@@ -38,12 +38,12 @@ segsurface3D <- function(filename_MR, filename_seg, labelnametibble, targetlabel
   # Display segmentations
   for (i in (1:dim(labeldf)[1])) {
     img <- img_seg
-    img[which(img != labeldf$Label_No[i])] <- 0
-    misc3d::contour3d(img, level = labeldf$Label_No[i], alpha = 0.9, add = TRUE, color = labeldf$color[i])
+    img[which(img != labeldf$label_id[i])] <- 0
+    misc3d::contour3d(img, level = labeldf$label_id[i], alpha = 0.9, add = TRUE, color = labeldf$color[i])
   }
 
   # Add text and legend
   rgl::text3d(x = dim(img_MR)[1] / 2, y = dim(img_MR)[2] * 0.98, z = dim(img_MR)[3] / 2, text = "A")
   rgl::text3d(x = dim(img_MR)[1] * 0.98, y = dim(img_MR)[2] / 2, z = dim(img_MR)[3] / 2, text = "R")
-  rgl::legend3d("topright", legend = labeldf$Label_name, pch = 16, col = labeldf$color, cex = 0.8, inset = 0.02)
+  rgl::legend3d("topright", legend = labeldf$label_name, pch = 16, col = labeldf$color, cex = 0.8, inset = 0.02)
 }

@@ -19,10 +19,10 @@ basymmetry <- function(filename, labelnametibble, option = 1) {
   labelnametibble <- check_label(labelnametibble)
   volume_cal <- filename %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::left_join(labelnametibble, by = "Label_No") %>%
-    dplyr::mutate(side = substring(trimws(Label_name), nchar(Label_name),nchar(Label_name))) %>%
+    dplyr::left_join(labelnametibble, by = "label_id") %>%
+    dplyr::mutate(side = substring(trimws(label_name), nchar(label_name),nchar(label_name))) %>%
     dplyr::filter(side == "R" | side == "L") %>%
-    dplyr::mutate(item = substring(trimws(Label_name), 1, nchar(Label_name) - 2))
+    dplyr::mutate(item = substring(trimws(label_name), 1, nchar(label_name) - 2))
 
   if (option == 1) {
     output <- volume_cal %>%

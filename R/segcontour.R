@@ -29,7 +29,7 @@ segcontour <- function(filename_MR, filename_seg, labelnametibble, slice_no, tar
   graphics::par(mfcol = c(rowno, colno))
   target_label <- target_label %>%
     tibble::as_tibble() %>%
-    stats::setNames("Label_No")
+    stats::setNames("label_id")
   t1 <- neurobase::readnii(filename_seg)
   t1_MR <- neurobase::readnii(filename_MR)
   # Define target and target_MR for cornal, sagittal and transverse plane
@@ -47,18 +47,18 @@ segcontour <- function(filename_MR, filename_seg, labelnametibble, slice_no, tar
   }
   # Create a tibble including label no, label name, RGB values for all slices
   RGBtibble <- tibble::as_tibble(table(target)) %>%
-    dplyr::mutate(Label_No = as.integer(target)) %>%
-    dplyr::inner_join(labelnametibble, by = "Label_No") %>%
-    dplyr::inner_join(target_label, by = "Label_No")
+    dplyr::mutate(label_id = as.integer(target)) %>%
+    dplyr::inner_join(labelnametibble, by = "label_id") %>%
+    dplyr::inner_join(target_label, by = "label_id")
   RGBtibble <- RGBtibble %>%
     dplyr::mutate(R_value = rep(c(1, 0, 1, 0, 1), len = nrow(RGBtibble)), G_value = rep(c(0, 1, 1, 1, 0), len = nrow(RGBtibble)), B_value = rep(c(0, 0, 0, 1, 1), len = nrow(RGBtibble))) %>%
-    dplyr::select(Label_No, Label_name, R_value, G_value, B_value)
+    dplyr::select(label_id, label_name, R_value, G_value, B_value)
   if (nrow(RGBtibble) == 0) {
     stop("Target label(s) is/are not included in slice(s).")
   } else {
     # Display label contour legend
     graphics::plot(NULL, xaxt = "n", yaxt = "n", bty = "n", ylab = "", xlab = "", xlim = 0:1, ylim = 0:1)
-    graphics::legend("topleft", legend = as.vector(RGBtibble$Label_name), pch = 15, pt.cex = 1.3, cex = 0.7, bty = "n", xjust = 0, yjust = 0, col = rep(c("red", "green", "yellow", "cyan", "magenta"), len = nrow(RGBtibble)))
+    graphics::legend("topleft", legend = as.vector(RGBtibble$label_name), pch = 15, pt.cex = 1.3, cex = 0.7, bty = "n", xjust = 0, yjust = 0, col = rep(c("red", "green", "yellow", "cyan", "magenta"), len = nrow(RGBtibble)))
     graphics::mtext("Label Contour", at = 0.1, cex = 0.8)
 
     for (i in 1:length(slice_no)) {
@@ -85,9 +85,9 @@ segcontour <- function(filename_MR, filename_seg, labelnametibble, slice_no, tar
       slice_MR <- EBImage::toRGB(slice_MR)
       # Create a tibble including label no, label name, RGB values for one slice
       slice_RGBtibble <- tibble::as_tibble(table(slice_img)) %>%
-        dplyr::mutate(Label_No = as.integer(slice_img)) %>%
-        dplyr::inner_join(RGBtibble, by = "Label_No") %>%
-        dplyr::select(Label_No, Label_name, R_value, G_value, B_value)
+        dplyr::mutate(label_id = as.integer(slice_img)) %>%
+        dplyr::inner_join(RGBtibble, by = "label_id") %>%
+        dplyr::select(label_id, label_name, R_value, G_value, B_value)
       # Create one empty image and convert it to RGB image
       com_img <- matrix(0, nrow = dim(slice_img)[1], ncol = dim(slice_img)[2])
       com_img <- EBImage::toRGB(com_img)

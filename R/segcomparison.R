@@ -7,7 +7,7 @@
 #' @param filename_MR A NIfTI-file of an MR image.
 #' @param filename_seg1 First NIfTI-file of segmentation
 #' @param filename_seg2 Second NIfTI-file of segmentation
-#' @param Label_No One label number for which region is to be displayed
+#' @param label_id One label number for which region is to be displayed
 #' @param anatomical_plane 1 for coronal plane, 2 for sagittal plane and 3 for
 #' transverse plane. Default is 3.
 #' @param rowno Number of rows for showing images. Default is 1.
@@ -16,7 +16,7 @@
 #' label number.
 #' @export
 
-segcomparison <- function(filename_MR, filename_seg1, filename_seg2, Label_No, anatomical_plane = 3, rowno = 1, colno = 1) {
+segcomparison <- function(filename_MR, filename_seg1, filename_seg2, label_id, anatomical_plane = 3, rowno = 1, colno = 1) {
   if (!is.null(grDevices::dev.list())) grDevices::dev.off()
   graphics::par(mfcol = c(rowno, colno))
   target1 <- neurobase::readnii(filename_seg1)
@@ -27,8 +27,8 @@ segcomparison <- function(filename_MR, filename_seg1, filename_seg2, Label_No, a
   if (chk_dim[1] != 0 | chk_dim[2] != 0 | chk_dim[3] != 0) {
     stop("Files do not have the same diemensions.")
   } else {
-    target1 <- ifelse(target1 == Label_No, 1, 0)
-    target2 <- ifelse(target2 == Label_No, 1, 0)
+    target1 <- ifelse(target1 == label_id, 1, 0)
+    target2 <- ifelse(target2 == label_id, 1, 0)
     target_diff <- target1 + 2 * target2
     img_1 <- ifelse(target_diff == 1, 1, 0)
     img_2 <- ifelse(target_diff == 2, 2, 0)

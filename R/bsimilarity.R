@@ -28,11 +28,11 @@ bsimilarity <- function(filename1, filename2, labelnametibble) {
     slice_no <- as.list(1:dim(img1)[3])
     paras <- list(slice_no, slice_img1, slice_img2)
     output<- purrr::pmap_dfr(paras, slice_label) %>%
-      dplyr::group_by(Label_No) %>%
+      dplyr::group_by(label_id) %>%
       dplyr::summarise(tot_overlap = sum(overlap_counts), tot_file1 = sum(file1_counts), tot_file2 = sum(file2_counts)) %>%
       dplyr::mutate(dice.coefficient = round(2 * tot_overlap / (tot_file1 + tot_file2), 3), jaccard.index = round(tot_overlap / (tot_file1 + tot_file2 - tot_overlap), 3)) %>%
-      dplyr::left_join(labelnametibble, by = "Label_No") %>%
-      dplyr::select(Label_No, Label_name, dice.coefficient, jaccard.index)
+      dplyr::left_join(labelnametibble, by = "label_id") %>%
+      dplyr::select(label_id, label_name, dice.coefficient, jaccard.index)
     return(output)
   }
 }

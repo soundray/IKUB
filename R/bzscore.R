@@ -17,10 +17,10 @@ bzscore <- function(filename, labelnametibble, refstats) {
   labelnametibble <- check_label(labelnametibble)
   zscoredf <- filename %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::left_join(refstats, by = "Label_No") %>%
+    dplyr::left_join(refstats, by = "label_id") %>%
     dplyr::mutate(z_score = (vol_mm3 - mean) / std) %>%
-    dplyr::right_join(labelnametibble, by = "Label_No") %>%
-    dplyr::select(filename, Label_No, Label_name, z_score) %>%
+    dplyr::right_join(labelnametibble, by = "label_id") %>%
+    dplyr::select(filename, label_id, label_name, z_score) %>%
     tidyr::pivot_wider(names_from = "filename", values_from = "z_score")
   return(zscoredf)
 }

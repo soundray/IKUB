@@ -12,7 +12,7 @@
 refmeanstd <- function(reflabels) {
   refstats <- reflabels %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::group_by(Label_No) %>%
+    dplyr::group_by(label_id) %>%
     dplyr::summarize(mean = mean(vol_mm3), std = stats::sd(vol_mm3))
   return(refstats)
 }

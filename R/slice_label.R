@@ -11,16 +11,16 @@
 
 slice_label<- function(slice_no, slice_img1, slice_img2) {
   if (sum(slice_img1 + slice_img2) > 0) {
-    tibble_img1 <- tibble::as_tibble(table(slice_img1)) %>% dplyr::mutate(Label_No = as.integer(slice_img1))
-    tibble_img2 <- tibble::as_tibble(table(slice_img2)) %>% dplyr::mutate(Label_No = as.integer(slice_img2))
-    tibble_merge <- dplyr::full_join(tibble_img1, tibble_img2, by = "Label_No") %>%
+    tibble_img1 <- tibble::as_tibble(table(slice_img1)) %>% dplyr::mutate(label_id = as.integer(slice_img1))
+    tibble_img2 <- tibble::as_tibble(table(slice_img2)) %>% dplyr::mutate(label_id = as.integer(slice_img2))
+    tibble_merge <- dplyr::full_join(tibble_img1, tibble_img2, by = "label_id") %>%
       dplyr::mutate(slice_no = slice_no) %>%
-      dplyr::select(slice_no, Label_No) %>%
-      dplyr::filter(Label_No > 0)
+      dplyr::select(slice_no, label_id) %>%
+      dplyr::filter(label_id > 0)
       img1_lst <- rep(list(slice_img1),dim(tibble_merge)[1])
       img2_lst <- rep(list(slice_img2),dim(tibble_merge)[1])
       sliceno <- rep(list(slice_no), dim(tibble_merge)[1])
-      paras <- list(sliceno, as.list(tibble_merge$Label_No), img1_lst, img2_lst)
+      paras <- list(sliceno, as.list(tibble_merge$label_id), img1_lst, img2_lst)
       output <- purrr::pmap_dfr(paras, element_count)
     return(output)
   }

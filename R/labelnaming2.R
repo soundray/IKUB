@@ -18,9 +18,9 @@ labelnaming2 <- function(filename, labelnametibble) {
   labelnametibble <- check_label(labelnametibble)
   voldf <- filename %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::right_join(labelnametibble, by = "Label_No") %>%
-    dplyr::select(filename, Label_No, Label_name, vol_mm3) %>%
-    dplyr::mutate(data.annotation = gsub(pattern = ".nii.gz", "", x = filename), variable_x = paste(Label_No, Label_name)) %>%
+    dplyr::right_join(labelnametibble, by = "label_id") %>%
+    dplyr::select(filename, label_id, label_name, vol_mm3) %>%
+    dplyr::mutate(data.annotation = gsub(pattern = ".nii.gz", "", x = filename), variable_x = paste(label_id, label_name)) %>%
     dplyr::select(data.annotation, variable_x, variable_y = vol_mm3)
 
 }

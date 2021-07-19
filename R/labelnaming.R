@@ -17,8 +17,8 @@ labelnaming <- function(filename, labelnametibble) {
   labelnametibble <- check_label(labelnametibble)
   voldf <- filename %>%
     purrr::map_dfr(regcount) %>%
-    dplyr::right_join(labelnametibble, by = "Label_No") %>%
-    dplyr::select(filename, Label_No, Label_name, vol_mm3) %>%
+    dplyr::right_join(labelnametibble, by = "label_id") %>%
+    dplyr::select(filename, label_id, label_name, vol_mm3) %>%
     tidyr::pivot_wider(names_from = "filename", values_from = "vol_mm3")
   return(voldf)
 }

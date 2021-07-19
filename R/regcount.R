@@ -10,9 +10,9 @@ regcount <- function(filename) {
   nifti <- neurobase::readnii(filename)
   volpervoxel <- prod(nifti@pixdim[2:4])
   output <- tibble::as_tibble(table(nifti))
-  output$Label_No <- as.integer(output$nifti)
+  output$label_id <- as.integer(output$nifti)
   output <- output %>%
     dplyr::mutate(vol_mm3 = round(n * volpervoxel, 3), filename = filename) %>%
-    dplyr::select(filename = filename, Label_No, counts = n, vol_mm3)
+    dplyr::select(filename = filename, label_id, counts = n, vol_mm3)
   return(output)
 }

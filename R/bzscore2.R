@@ -15,11 +15,11 @@
 bzscore2 <- function(targets, labelnametibble, refstats) {
   labelnametibble <- check_label(labelnametibble)
   targetvols <- targets %>% purrr::map_dfr(regcount)
-  zscoredf <- dplyr::left_join(targetvols, refstats, by = "Label_No") %>%
+  zscoredf <- dplyr::left_join(targetvols, refstats, by = "label_id") %>%
     dplyr::mutate(z_score = (vol_mm3 - mean) / std) %>%
-    dplyr::right_join(labelnametibble, by = "Label_No") %>%
-    dplyr::select(filename, Label_No, Label_name, z_score) %>%
-    dplyr::mutate(data.annotation = gsub(pattern = ".nii.gz", "", x = filename), variable_x = paste(Label_No, Label_name)) %>%
+    dplyr::right_join(labelnametibble, by = "label_id") %>%
+    dplyr::select(filename, label_id, label_name, z_score) %>%
+    dplyr::mutate(data.annotation = gsub(pattern = ".nii.gz", "", x = filename), variable_x = paste(label_id, label_name)) %>%
     dplyr::select(data.annotation, variable_x, variable_y = z_score)
 
 }

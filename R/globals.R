@@ -1,4 +1,4 @@
-utils::globalVariables(c('n', 'Label_No', 'vol_mm3', 'Label_name'))
+utils::globalVariables(c('n', 'label_id', 'vol_mm3', 'label_name'))
 utils::globalVariables(c('variable_x', 'data.annotation', 'R', 'G', 'B'))
 utils::globalVariables(c('img1','img2','tibble', 'std', 'z_score', 'filename'))
 utils::globalVariables(c('side','L','asymmetry_index','item'))
