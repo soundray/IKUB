@@ -12,7 +12,7 @@ regcount <- function(filename) {
   output <- tibble::as_tibble(table(nifti))
   output$label_id <- as.integer(output$nifti)
   output <- output %>%
-    dplyr::mutate(vol_mm3 = round(n * volpervoxel, 3), filename = filename) %>%
+    dplyr::mutate(vol_mm3 = n * volpervoxel, filename = filename) %>%
     dplyr::select(filename = filename, label_id, counts = n, vol_mm3)
   return(output)
 }
